@@ -1,6 +1,18 @@
 isqrt :: Integer -> Integer
 isqrt = floor . sqrt . fromIntegral
 
+isEven :: Integer -> Bool
+isEven n = n `mod` 2 == 0
+
+hailstone :: Integer -> Integer
+hailstone n
+  | isEven n = n `div` 2
+  | otherwise      = 3*n + 1
+
+hailstoneSeq :: Integer -> [Integer]
+hailstoneSeq 1 = [1]
+hailstoneSeq n = n : hailstoneSeq (hailstone n)
+
 isPrime :: Integer -> Bool
 isPrime k = (k > 1) && null [ x | x <- [2..isqrt k], k `mod` x == 0]
 
