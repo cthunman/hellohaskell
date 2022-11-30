@@ -1,7 +1,12 @@
+import Data.List
+import Distribution.Simple.Utils (xargs)
+
+myDrop :: (Ord t, Num t) => t -> [a] -> [a]
 myDrop n xs = if n <= 0 || null xs
               then xs
               else myDrop (n - 1) (tail xs)
 
+isOdd :: Integral a => a -> Bool
 isOdd n = mod n 2 == 1
 
 lastButOne :: [a] -> a
@@ -12,7 +17,6 @@ lastButOne xs = if length xs < 2
 
 
 tidySecond :: [a] -> Maybe a
-
 tidySecond (_:x:_) = Just x
 tidySecond _       = Nothing
 
@@ -46,9 +50,33 @@ data List a = Cons a (List a)
             | Nil
               deriving (Show)
 
-data Tree a = Node a (Maybe (Tree a)) (Maybe (Tree a))
-    deriving (Show)
+-- data Tree a where
+--   Node :: a -> (Tree a) -> (Tree a) -> Tree a
+--   Empty :: Tree a
+--   deriving (Show)
 
+-- leftNode :: Tree a -> Tree a
+-- leftNode (Node _ left _) = left
+-- rightNode :: Tree a -> Tree a
+-- rightNode (Node _ _ right) = right
+
+-- depthOfTree :: Tree 
+-- depthOfTree t = 
+
+data Customer = Customer Int String [String]
+                deriving (Show)
+
+customerID :: Customer -> Int
+customerID (Customer id _ _) = id
+
+customerName :: Customer -> String
+customerName (Customer _ name _) = name
+
+customerAddress :: Customer -> [String]
+customerAddress (Customer _ _ address) = address
+
+
+quux :: p -> [Char]
 quux a = let a = "foo"
          in a ++ "eek!"
 
@@ -58,6 +86,7 @@ pluralise word counts = map plural counts
           plural 1 = "one " ++ word
           plural n = show n ++ " " ++ word ++ "s"
 
+lend3 :: (Ord a, Fractional a) => a -> a -> Maybe a
 lend3 amount balance
      | amount <= 0            = Nothing
      | amount > reserve * 0.5 = Nothing
@@ -80,4 +109,22 @@ meanOfList [] = 0
 meanOfList (x:[]) = x
 meanOfList xs = (/) (sumOfList xs) (fromIntegral (lengthOfList xs))
 
--- createPalindrome :: [a] -> [a]
+createPalindrome :: [a] -> [a]
+createPalindrome [] = []
+createPalindrome (x:[]) = x:x:[]
+createPalindrome (x:xs) = [x] ++ (createPalindrome xs) ++ [x]
+
+reverseList :: [a] -> [a]
+reverseList [] = []
+reverseList (x:[]) = [x]
+reverseList (x:xs) = (reverseList xs) ++ [x]
+
+testPalindrome :: Eq a => [a] -> Bool
+testPalindrome [] = True
+testPalindrome (x:[]) = True
+testPalindrome (xs) = xs == reverseList xs
+
+intersperseMe :: a -> [[a]] -> [a]
+intersperseMe c [] = []
+intersperseMe c (x:[]) = x
+intersperseMe c (x:xs) = x ++ [c] ++ (intersperseMe c xs)
