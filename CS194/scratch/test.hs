@@ -50,19 +50,6 @@ data List a = Cons a (List a)
             | Nil
               deriving (Show)
 
--- data Tree a where
---   Node :: a -> (Tree a) -> (Tree a) -> Tree a
---   Empty :: Tree a
---   deriving (Show)
-
--- leftNode :: Tree a -> Tree a
--- leftNode (Node _ left _) = left
--- rightNode :: Tree a -> Tree a
--- rightNode (Node _ _ right) = right
-
--- depthOfTree :: Tree 
--- depthOfTree t = 
-
 data Customer = Customer Int String [String]
                 deriving (Show)
 
@@ -128,3 +115,26 @@ intersperseMe :: a -> [[a]] -> [a]
 intersperseMe c [] = []
 intersperseMe c (x:[]) = x
 intersperseMe c (x:xs) = x ++ [c] ++ (intersperseMe c xs)
+
+quickSort :: Ord a => [a] -> [a]
+quickSort [] = []
+quickSort (p:xs) = (quickSort lesser) ++ [p] ++ (quickSort greater)
+    where
+        lesser = filter (< p) xs
+        greater = filter (>= p) xs
+
+mergeLists :: Ord a => [a] -> [a] -> [a]
+mergeLists [] [] = []
+mergeLists xs [] = xs
+mergeLists [] xs = xs
+mergeLists (x:xs) (y:ys) = if x <= y
+    then [x] ++ mergeLists xs (y:ys)
+    else [y] ++ mergeLists (x:xs) ys
+
+mergeSort :: Ord a => [a] -> [a]
+mergeSort [] = []
+mergeSort (x:[]) = [x]
+mergeSort xs = mergeLists (mergeSort firstHalf) (mergeSort secondHalf)
+    where
+        firstHalf = fst (splitAt (div (length xs) 2) xs)
+        secondHalf = snd (splitAt (div (length xs) 2) xs)
